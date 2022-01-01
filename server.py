@@ -13,7 +13,7 @@ def send(msg): #this sends the msg to all the clients
     clients.send(msg.encode())
     
 def listen(client,address): 
-   print "Accepted connection from: ", address
+   print ("Accepted connection from: " + address)
     clients.append(client)
     while True:
         data = client.recv(1024)
