@@ -1,9 +1,8 @@
 import socket
 from threading import Thread
-import threading
 
 HOST = '127.0.0.1'
-PORT = 80
+PORT = 65432
 messages = []  # list of all the msgs, unnecessary but there anyways
 clients = []  # list of all the clients
 th = []  # all the threads
@@ -15,7 +14,7 @@ def send(msg):  # this sends the msg to all the clients
 
 
 def listen(cli, addr):
-    print("Accepted connection from: " + addr)
+    print("Accepted connection from: ", addr)
     clients.append(cli)
     while True:
         data = cli.recv(1024)
