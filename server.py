@@ -10,7 +10,7 @@ th = []  # all the threads
 
 def send(msg):  # this sends the msg to all the clients
     for c in clients:
-        c.send(msg.encode())
+        c.send(msg)
 
 
 def listen(cli, addr):
@@ -27,9 +27,9 @@ def listen(cli, addr):
 
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))  # the bind puts the socket on port 80 on
+    s.bind((HOST, PORT))  # the bind puts the socket on port 65432 on
     # the specific network interface
-    # now listen to the web server on port 80 - the normal http port
+    # now listen to the web server on port 65432 - the normal http port
     s.listen(5)
     while True:
         print("Server is listening for connections...")
