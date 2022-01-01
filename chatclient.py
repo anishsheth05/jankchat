@@ -24,13 +24,10 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.send(b'hello world')
     while True:
         event, values = window.read()       # gets info from window
-        print("values and events got")
         if event == sg.WIN_CLOSED or event == 'Exit':
             break       # exit loop if 'x' or exit button clicked
-        print('closing parsed')
         if event == 'Send':
-            s.send(values[0].encode())
-        print('sending parsed')
+            s.send(values[0].encode())  # sends encoded messages
         data = s.recv(1024)
         print('Received', repr(data))
 
