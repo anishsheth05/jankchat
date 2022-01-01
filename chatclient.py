@@ -1,15 +1,10 @@
 import PySimpleGUI as sg
 import socket
 
+from PySimpleGUI.PySimpleGUI import InputText
+
 HOST = '127.0.0.1'  # The server's hostname or IP address
 PORT = 65432        # The port used by the server
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    s.sendall(b'Hello, world')
-    data = s.recv(1024)
-
-print('Received', repr(data))
 
 sg.theme('DarkAmber')
 
@@ -23,11 +18,21 @@ layout = [
 # pops window into existence
 window = sg.Window('JankChat v0.0.1', layout)
 
-while True:
-    event, values = window.read()       # gets info from window
-    if event == sg.WIN_CLOSED or event == 'Exit':
-        break       # exit loop if 'x' or exit button clicked
-    # HAVE TO ADD the sending and receiving
+
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    s.send(b'hello world')
+    while True:
+        event, values = window.read()       # gets info from window
+        print("values and events got")
+        if event == sg.WIN_CLOSED or event == 'Exit':
+            break       # exit loop if 'x' or exit button clicked
+        print('closing parsed')
+        if event == 'Send':
+            s.send(values[0].encode())
+        print('sending parsed')
+        data = s.recv(1024)
+        print('Received', repr(data))
 
 # closes program after exiting or clicking 'x' out button
 window.close()
