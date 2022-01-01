@@ -7,11 +7,14 @@ HOST = '127.0.0.1'
 PORT = 80
 messages = []
 clients = []
+th = []
 def send(msg):
   for client in clients:
+    clients.send(msg.encode())
     
 def listen(client,address):
    print "Accepted connection from: ", address
+    clients.append(client)
     while True:
         data = client.recv(1024)
         if not data:
