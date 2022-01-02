@@ -21,7 +21,7 @@ window = sg.Window('JankChat v0.0.1', layout)
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
-    s.send(b'hello world')
+    #s.send(b'hello world') 
     while True:
         event, values = window.read()       # gets info from window
         if event == sg.WIN_CLOSED or event == 'Exit':
