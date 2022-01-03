@@ -12,10 +12,11 @@ sg.theme('DarkAmber')
 chatbox = """
 Type something out and press \'Send\' to send a message!
 """
+msgd = False
 
 # sets up how the code looks
 layout = [
-    [sg.Text('Text on row 1', size=(200, 40))],
+    [sg.Text(chatbox, size=(200, 40), key='Text')],
     [sg.Text('Enter chat here:'), sg.InputText()],
     [sg.Button('Send'), sg.Button('Exit')]
 ]
@@ -34,13 +35,16 @@ def receiving():
         if not data:
             break
         else:
-            print(data.decode("utf-8"))
+            incoming = data.decode("utf-8")
+            print(incoming)
+            global chatbox
+            chatbox += '\n' + incoming + '\n'
 
 
 
 close = False
 s.connect((HOST, PORT))
-th = [Thread(target=receiving).start()]
+th = [Thread(target=receiving, args=()).start()]
 while True:
     event, values = window.read(timeout=50)  # gets info from window
     if event == sg.WIN_CLOSED or event == 'Exit':
@@ -49,6 +53,10 @@ while True:
         break  # exit loop if 'x' or exit button clicked
     if event == 'Send':
         s.send(values[0].encode())  # sends encoded messages
+        values[0] = ''      # trying to clear input after sending msg
+        window.ding()
+    textbox = window['Text']
+    textbox.update(chatbox)
     
 
 
