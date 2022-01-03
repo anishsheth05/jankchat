@@ -31,7 +31,7 @@ def receiving():
         if not data:
             break
         else:
-            print(repr(data))
+            print(data.decode("utf-8"))
         if close:
             break
     s.close()
@@ -41,7 +41,7 @@ close = False
 s.connect((HOST, PORT))
 th = [Thread(target=receiving).start()]
 while True:
-    event, values = window.read()  # gets info from window
+    event, values = window.read(timeout=50)  # gets info from window
     if event == sg.WIN_CLOSED or event == 'Exit':
         break  # exit loop if 'x' or exit button clicked
     if event == 'Send':
