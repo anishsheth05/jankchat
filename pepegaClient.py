@@ -1,45 +1,46 @@
-        
+import PySimpleGUI as sg
 import socket
 from threading import Thread
+from PySimpleGUI.PySimpleGUI import InputText
 
-HOST = '127.0.0.1'
-PORT = 65432
-messages = []  # list of all the msgs, unnecessary but there anyways
-clients = []  # list of all the clients
-th = []  # all the threads
+HOST = '127.0.0.1'  # The server's hostname or IP address
+PORT = 65432        # The port used by the server
 
-
-def send(msg, clientNumber):  # this sends the msg to all the clients
-    msg = ('Client {num}: {msg}'.format(clientNumber,msg.decode())).encode()
-    for c in clients:
-        c.send(msg)
+sg.theme('DarkAmber')
 
 
+# sets up how the code looks
+layout = [
+    [sg.Text('Text on row 1')],
+    [sg.Text('Enter chat here:'), sg.InputText()],
+    [sg.Button('Send'), sg.Button('Exit')]
+]
 
-def listen(cli, addr, clientNumber):
-    print("Accepted connection from: ", addr)
-    clients.append(cli)
+# pops window into existence
+window = sg.Window('JankChat v0.0.1', layout)
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+def receiving():
     while True:
-        data = cli.recv(1024)
+        data = s.recv(1024)
         if not data:
             break
         else:
-            messages.append(data)
-            send(data, clientNumber)
-    cli.close()
-
-
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((HOST, PORT))  # the bind puts the socket on port 65432 on
-    # the specific network interface
-    # now listen to the web server on port 65432 - the normal http port
-    s.listen(5)
-    while True:
-        print("Server is listening for connections...")
-        client, address = s.accept()
-        th.append(Thread(target=listen, args=(
-        client, address, len(clients)+1)).start())  # threaded stuff it makes a thread for each client and makes it do listen
-        s.send("Welcome Client {number}".format(len(clients)+1))
-
-
+            print(repr(data))
     s.close()
+
+
+s.connect((HOST, PORT))
+th = [Thread(target=receiving).start()]
+while True:
+    event, values = window.read()  # gets info from window
+    if event == sg.WIN_CLOSED or event == 'Exit':
+        break  # exit loop if 'x' or exit button clicked
+    if event == 'Send':
+        s.send(values[0].encode())  # sends encoded messages
+
+
+
+
+# closes program after exiting or clicking 'x' out button
+window.close()
