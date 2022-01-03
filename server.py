@@ -30,12 +30,12 @@ def listen(cli, addr, clientNumber):
         else:
             msg = data.decode()
             if msg[0:1]=='/':
+                commands.append(msg)
                 if msg[1:8] == 'whisper': #/whisper 10
                     msg = msg[9:]
                     person = int(msg[0:msg.find(' ')])
                     msg = msg[msg.find(' ')+1:]
                 elif msg[1:5] == 'kill':  #/kill
-                    commands.append(msg)
                     for c in clients:
                         c.close()
 
