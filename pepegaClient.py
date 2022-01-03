@@ -37,8 +37,8 @@ def receiving():
         else:
             incoming = data.decode("utf-8")
             print(incoming)
-            global chatbox
-            chatbox += '\n' + incoming + '\n'
+            global chatbox  # basically saying we want the global chatbox
+            chatbox += '\n' + incoming + '\n'   # adding a newline to it
 
 
 
