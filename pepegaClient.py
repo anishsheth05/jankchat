@@ -27,9 +27,11 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 def receiving():
     while True:
-        data = s.recv(1024)
+        try:
+            data = s.recv(1024)
+        except:
+            break
         if not data:
-            s.close()
             break
         else:
             print(data.decode("utf-8"))
@@ -42,7 +44,7 @@ th = [Thread(target=receiving).start()]
 while True:
     event, values = window.read(timeout=50)  # gets info from window
     if event == sg.WIN_CLOSED or event == 'Exit':
-        window.close()
+        window.close()  # closes program after exiting or clicking 'x' out button
         s.close()
         break  # exit loop if 'x' or exit button clicked
     if event == 'Send':
@@ -52,5 +54,4 @@ while True:
 
 
 
-# closes program after exiting or clicking 'x' out button
 
