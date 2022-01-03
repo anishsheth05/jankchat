@@ -38,14 +38,12 @@ def receiving():
             incoming = data.decode("utf-8")
             print(incoming)
             global chatbox  # basically saying we want the global chatbox
-            print(chatbox.count('\n'))
-            if chatbox.count('\n') > 38:
-                print('whyyyyyyy')
-                lines = chatbox.splitlines()
+            if chatbox.count('\n') > 36:
+                lines = chatbox.splitlines(keepends=True)
                 lines = lines[2:]
                 lines.append('\n')
                 lines.append(incoming + '\n')
-                chatbox = str(lines)
+                chatbox = ''.join(lines)
             else:
                 chatbox += '\n' + incoming + '\n'   # adding a newline to it
 
