@@ -38,7 +38,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         client, address = s.accept()
         th.append(Thread(target=listen, args=(
         client, address, len(clients)+1)).start())  # threaded stuff it makes a thread for each client and makes it do listen
-        s.send("Welcome Client {number}".format(len(clients)+1))
+        s.send("Welcome Client {}".format(len(clients)+1))
 
 
     s.close()
