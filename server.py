@@ -20,7 +20,7 @@ def death_msg(clientNumber):    # sends a msg about client leaving
 
 def listen(cli, addr, clientNumber):
     print("Accepted connection from: ", addr)
-    clients.append(cli)
+
     while True:
         data = cli.recv(1024)
         if not data:
@@ -44,8 +44,9 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         client, address = s.accept()
         th.append(Thread(target=listen, args=(
         client, address, len(clients)+1)).start())  # threaded stuff it makes a thread for each client and makes it do listen
+        clients.append(cli)
         for c in clients:
-            c.send("Client {} has joined the chat".format(len(clients)+1).encode())
+            c.send("Client {} has joined the chat".format(len(clients)).encode())
 
 
     s.close()
