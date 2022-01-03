@@ -27,8 +27,16 @@ def listen(cli, addr, clientNumber):
 
             break
         else:
-            messages.append(data)
-            send(data, clientNumber)
+            msg = data.decode()
+            if msg[0:1]=='/':
+                if msg[1:8] == 'whisper': #/whisper 10
+                    msg = msg[9:]
+                    person = int(msg[0:msg.find(' ')])
+                    msg = msg[msg.find(' ')+1:]
+
+            else:
+                messages.append(data)
+                send(data, clientNumber)
     clients.pop(clientNumber-1)
     death_msg(clientNumber)
     cli.close()
