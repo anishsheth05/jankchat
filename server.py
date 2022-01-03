@@ -42,7 +42,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     while True:
         print("Server is listening for connections...")
         client, address = s.accept()
-        clients.append(cli)
+        clients.append(client)
         th.append(Thread(target=listen, args=(
         client, address, len(clients))).start())  # threaded stuff it makes a thread for each client and makes it do listen
         for c in clients:
