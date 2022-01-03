@@ -13,7 +13,10 @@ def send(msg, clientNumber):  # this sends the msg to all the clients
     for c in clients:
         c.send(msg)
 
-
+def death_msg(clientNumber):    # sends a msg about client leaving
+    msg = ('Client {} has left the chat.'.format(clientNumber)).encode()
+    for c in clients:
+        c.send(msg)
 
 def listen(cli, addr, clientNumber):
     print("Accepted connection from: ", addr)
