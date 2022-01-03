@@ -24,10 +24,13 @@ def listen(cli, addr, clientNumber):
     while True:
         data = cli.recv(1024)
         if not data:
+
             break
         else:
             messages.append(data)
             send(data, clientNumber)
+    clients.pop(clientNumber-1)
+    death_msg(clientNumber)
     cli.close()
 
 
