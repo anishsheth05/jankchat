@@ -8,12 +8,14 @@ clients = []  # list of all the clients
 th = []  # all the threads
 
 
-def send(msg):  # this sends the msg to all the clients
+def send(msg, clientNumber):  # this sends the msg to all the clients
+    msg = ('Client {num}: {msg}'.format(clientNumber,msg.decode())).encode()
     for c in clients:
         c.send(msg)
 
 
-def listen(cli, addr):
+
+def listen(cli, addr, clientNumber):
     print("Accepted connection from: ", addr)
     clients.append(cli)
     while True:
@@ -22,7 +24,7 @@ def listen(cli, addr):
             break
         else:
             messages.append(data)
-            send(data)
+            send(data, clientNumber)
     cli.close()
 
 
@@ -35,6 +37,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print("Server is listening for connections...")
         client, address = s.accept()
         th.append(Thread(target=listen, args=(
-        client, address)).start())  # threaded stuff it makes a thread for each client and makes it do listen
+        client, address, len(clients)+1)).start())  # threaded stuff it makes a thread for each client and makes it do listen
+        s.send("Welcome Client {number}".format(len(clients)+1))
+
 
     s.close()
