@@ -8,10 +8,14 @@ PORT = 65432        # The port used by the server
 
 sg.theme('DarkAmber')
 
+# global variable to be used for containing the chat
+chatbox = """
+Type something out and press \'Send\' to send a message!
+"""
 
 # sets up how the code looks
 layout = [
-    [sg.Text('Text on row 1')],
+    [sg.Text('Text on row 1', size=(200, 40))],
     [sg.Text('Enter chat here:'), sg.InputText()],
     [sg.Button('Send'), sg.Button('Exit')]
 ]
@@ -20,6 +24,7 @@ layout = [
 window = sg.Window('JankChat v0.0.1', layout)
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+
 def receiving():
     while True:
         data = s.recv(1024)
@@ -27,9 +32,12 @@ def receiving():
             break
         else:
             print(repr(data))
+        if close:
+            break
     s.close()
 
 
+close = False
 s.connect((HOST, PORT))
 th = [Thread(target=receiving).start()]
 while True:
@@ -38,9 +46,11 @@ while True:
         break  # exit loop if 'x' or exit button clicked
     if event == 'Send':
         s.send(values[0].encode())  # sends encoded messages
+    
 
 
 
 
 # closes program after exiting or clicking 'x' out button
 window.close()
+close = True

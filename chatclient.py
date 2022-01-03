@@ -23,7 +23,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     s.connect((HOST, PORT))
     #s.send(b'hello world') 
     while True:
-        event, values = window.read()       # gets info from window
+        event, values = window.read(timeout=50)       # gets info from window
         if event == sg.WIN_CLOSED or event == 'Exit':
             break       # exit loop if 'x' or exit button clicked
         if event == 'Send':

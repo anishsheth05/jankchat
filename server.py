@@ -9,7 +9,7 @@ th = []  # all the threads
 
 
 def send(msg, clientNumber):  # this sends the msg to all the clients
-    msg = ('Client {num}: {msg}'.format(clientNumber,msg.decode())).encode()
+    msg = ('Client {}: {}'.format(clientNumber,msg.decode())).encode()
     for c in clients:
         c.send(msg)
 
