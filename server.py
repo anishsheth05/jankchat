@@ -47,7 +47,7 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         th.append(Thread(target=listen, args=(client, address, totalClientNum)).start())  # threaded stuff it makes a thread for each client and makes it do listen
         if len(clients) == 1:
             totalClientNum = 1
-            client.send("Welcome to the chat Client 1! We're glad you could make it".encode())
+            client.send("Welcome to the chat, Client 1! We're glad you could make it!".encode())
         else:
             for c in clients:
                 c.send("Client {} has joined the chat".format(totalClientNum).encode())
