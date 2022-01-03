@@ -6,7 +6,7 @@ PORT = 65432
 messages = []  # list of all the msgs, unnecessary but there anyways
 clients = []  # list of all the clients
 th = []  # all the threads
-
+totalClientNum = 0
 
 def send(msg, clientNumber):  # this sends the msg to all the clients
     msg = ('Client {}: {}'.format(clientNumber,msg.decode())).encode()
@@ -43,10 +43,14 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         print("Server is listening for connections...")
         client, address = s.accept()
         clients.append(client)
-        th.append(Thread(target=listen, args=(
-        client, address, len(clients))).start())  # threaded stuff it makes a thread for each client and makes it do listen
-        for c in clients:
-            c.send("Client {} has joined the chat".format(len(clients)).encode())
+        totalClientNum += 1
+        th.append(Thread(target=listen, args=(client, address, totalClientNum)).start())  # threaded stuff it makes a thread for each client and makes it do listen
+        if len(clients) == 1:
+            totalClientNum = 1
+            client.send("Welcome to the chat Client 1! We're glad you could make it".encode())
+        else:
+            for c in clients:
+                c.send("Client {} has joined the chat".format(totalClientNum).encode())
 
 
     s.close()
