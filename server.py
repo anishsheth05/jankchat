@@ -4,6 +4,7 @@ from threading import Thread
 HOST = '127.0.0.1'
 PORT = 65432
 messages = []  # list of all the msgs, unnecessary but there anyways
+commands = []  # list of all commands to keep track
 clients = []  # list of all the clients
 th = []  # all the threads
 totalClientNum = 0
@@ -33,6 +34,10 @@ def listen(cli, addr, clientNumber):
                     msg = msg[9:]
                     person = int(msg[0:msg.find(' ')])
                     msg = msg[msg.find(' ')+1:]
+                elif msg[1:5] == 'kill':  #/kill
+                    commands.append(msg)
+                    for c in clients:
+                        c.close()
 
             else:
                 messages.append(data)
