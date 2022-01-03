@@ -1,6 +1,6 @@
 
-1. whisper
-2. kick
-3. kill
-4. pigLatin
-5. cypher
+1. whisper (serverSide)
+2. kick    (serverSide)
+3. kill    (serverSide)
+4. pigLatin(clientSide)
+5. cypher  (clientSide)
