@@ -24,7 +24,7 @@ layout = [
 
 # pops window into existence
 window = sg.Window('JankChat v0.0.1', layout)
-window.read()
+window.read(timeout=50)
 textbox = window['Text']
 
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
