@@ -29,12 +29,11 @@ def receiving():
     while True:
         data = s.recv(1024)
         if not data:
+            s.close()
             break
         else:
             print(data.decode("utf-8"))
-        if close:
-            break
-    s.close()
+
 
 
 close = False
@@ -43,6 +42,8 @@ th = [Thread(target=receiving).start()]
 while True:
     event, values = window.read(timeout=50)  # gets info from window
     if event == sg.WIN_CLOSED or event == 'Exit':
+        window.close()
+        s.close()
         break  # exit loop if 'x' or exit button clicked
     if event == 'Send':
         s.send(values[0].encode())  # sends encoded messages
@@ -52,5 +53,4 @@ while True:
 
 
 # closes program after exiting or clicking 'x' out button
-window.close()
-close = True
+
