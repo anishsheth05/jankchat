@@ -18,7 +18,7 @@ msgd = False
 layout = [
     [sg.Multiline(chatbox, size=(200, 40), key='Text', autoscroll=True,
                   focus=False, disabled=True)],
-    [sg.Text('Enter chat here:'), sg.InputText()],
+    [sg.Text('Enter chat here:'), sg.Input(do_not_clear=False, )],
     [sg.Button('Send'), sg.Button('Exit')]
 ]
 
@@ -63,7 +63,21 @@ while True:
         s.close()
         break  # exit loop if 'x' or exit button clicked
     if event == 'Send':
-        s.send(values[0].encode())  # sends encoded messages
-        values[0] = ''      # trying to clear input after sending msg
+        msg: str = values[0]
+        if msg[:1] == '/':
+            if msg[1:8] == 'piglatin':
+                words = msg[9:].split(sep=' ')
+                for i in range(words.len()):
+                    word = words[i]
+                    if word[0] == 'a' or word[0] == 'e' or word[0] == 'i' \
+                       or word[0] == 'o' or word[i] == 'u':
+                       words[i] = words[i] + 'yay'
+                    else:
+                        
+                       
+
+        else:
+            s.send(msg.encode())  # sends encoded messages
+            # values[0] = ''      # trying to clear input after sending msg
         window.ding()
     
