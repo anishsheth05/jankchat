@@ -40,15 +40,7 @@ def receiving():
             break
         else:
             incoming = data.decode("utf-8")
-            print(incoming)
             global chatbox  # basically saying we want the global chatbox
-            # if chatbox.count('\n') > 36:
-            #     lines = chatbox.splitlines(keepends=True)
-            #     lines = lines[2:]
-            #     lines.append('\n')
-            #     lines.append(incoming + '\n')
-            #     chatbox = ''.join(lines)
-            # else:
             chatbox += '\n' + incoming + '\n'   # adding a newline to it
             textbox.update(chatbox)
             inputbox.update('')
@@ -65,10 +57,8 @@ while True:
         break  # exit loop if 'x' or exit button clicked
     if event == 'Send':
         msg: str = values['Input']
-        if msg[:1] == '/':
-            print('command found')
-            if msg[1:9] == 'piglatin':
-                print('piglatin is the command')
+        if msg[:1] == '/':  # detects commands
+            if msg[1:9] == 'piglatin':  # handles piglatin translation
                 words = msg[10:].split(sep=' ')
                 for i in range(0, len(words)):
                     word = words[i]
@@ -94,9 +84,8 @@ while True:
                 msg = ''.join(words)
                 s.send(msg.encode())
             else:
-                s.send(msg.encode())
+                s.send(msg.encode())    # sends unrecognized commands to server
         else:
             s.send(msg.encode())  # sends encoded messages
-            # values[0] = ''      # trying to clear input after sending msg
         window.ding()
     
