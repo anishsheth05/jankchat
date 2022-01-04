@@ -35,15 +35,14 @@ def listen(cli, addr, clientNumber):
             msg = data.decode()
             if msg[0:1] == '/':
                 commands.append(msg)
-                if msg[1:8] == 'whisper':   # /whisper [clientNum]
-                    receiver = int(msg[9:msg.find(' ')])
+                if msg[1:8] == 'whisper':  # /whisper 10
+                    msg = msg[9:]
+                    receiver = int(msg[:msg.find(' ')])
                     msg = ('Client {} to Client {}: {}'.format(clientNumber, receiver, msg[msg.find(' ') + 1:])).encode()
                     clients[receiver].send(msg)
                     cli.send(msg)
-                elif msg[1:5] == 'kick':    # /kick [clientNum]
-                    person = int(msg[6:msg.find(' ')])
-                elif msg[1:5] == 'kill':    # /kill
-                    for c in clients:
+                elif msg[1:5] == 'kill':  # /kill
+                    for c in clients.values():
                         c.close()
 
             else:
