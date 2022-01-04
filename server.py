@@ -35,6 +35,7 @@ def listen(cli, addr, clientNumber):
             msg = data.decode()
             if msg[0:1] == '/':
                 commands.append(msg)
+                print(msg[1:])
                 if msg[1:8] == 'whisper':  # /whisper 10
                     msg = msg[9:]
                     receiver = int(msg[:msg.find(' ')])
@@ -44,7 +45,10 @@ def listen(cli, addr, clientNumber):
                 elif msg[1:5] == 'kill':  # /kill
                     for c in clients.values():
                         c.close()
-
+                elif msg[1:5] == 'kick': # /kick 1
+                    print('hi')
+                    clients[int(msg[6:])].close()
+                    print(int(msg[6:]))
             else:
                 messages.append(data)
                 send(data, clientNumber)
@@ -68,6 +72,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
             totalClientNum+=1
             for clie in clients.values():
                 clie.send("Client {} has joined the chat".format(totalClientNum).encode())
+
+            client.send("Welcome Client{}".format(totalClientNum).encode())
         clients[totalClientNum] = client
 
         th.append(Thread(target=listen, args=(client, address,
