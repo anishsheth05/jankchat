@@ -83,6 +83,29 @@ while True:
                         words[i] = words[i][first_vowel:] + words[i][0:first_vowel] + 'ay '
                 msg = ''.join(words)
                 s.send(msg.encode())
+            if msg[1:7] == 'cipher':
+                cipher = msg[msg[8:].find(' ') + 9:]
+                abc = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i',
+                    'j', 'k', 'l', 'm', 'n', 'o', 'p',' q', 'r', 's',
+                    't', 'u', 'v', 'w', 'x', 'y', 'z']
+                ABC = [str.upper(letter) for letter in abc]
+                try:
+                    shift = int(msg[8:9 + msg[8:].find(' ')])
+                except:
+                    shift = 0
+                    cipher = ""
+                letternary = {}
+                for i in range(len(abc)):
+                    letternary[abc[i]] = abc[(i + shift)%26]
+                    letternary[ABC[i]] = ABC[(i + shift)%26]
+                encrypted = ''
+                for letter in cipher:
+                    try:
+                        encrypted += letternary[letter]
+                    except:
+                        encrypted += letter
+                s.send(encrypted.encode()) # sends caesar-ciphered msg
+
             else:
                 s.send(msg.encode())    # sends unrecognized commands to server
         else:
